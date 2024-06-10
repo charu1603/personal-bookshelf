@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 **1.** How to run this project
 
 ```bash
-git clone https://github.com/charu1603/to-do-list.git
+git clone https://github.com/charu1603/personal-bookshelf.git
 ```
 
 **2.** Install required dependencies.
