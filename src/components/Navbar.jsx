@@ -43,14 +43,7 @@ function Navbar() {
                     Books API Integration Application
                   </Typography>
                 </MenuItem>
-                <MenuItem
-                  
-                  sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography component={Link} to="/bookshelf"  variant="body2" color="text.primary">
-                   Bookshelf <FaBookmark />
-                  </Typography>
-                </MenuItem>
+              
               </Box>
             </Box>
           </Toolbar>

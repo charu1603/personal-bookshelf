@@ -5,35 +5,25 @@ import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
 export default function Featured({ searchTerm }) {
   const [books, setBooks] = useState([]);
-  const [bookshelf, setBookshelf] = useState(JSON.parse(localStorage.getItem('bookshelf')) || []);
+ 
 
   const fetchBooks = async (query) => {
-    
-    const url = `https://openlibrary.org/search.json?q=${query}&limit=10&page=1`;
+    const url = `https://book-rest-api-production.up.railway.app/`; 
 
     try {
       const response = await axios.get(url);
-      setBooks(response.data.docs || []);
-      console.log(response.data.docs);
+      setBooks(response.data || []);
     } catch (error) {
       console.error('Error fetching books:', error);
     }
   };
 
- 
   useEffect(() => {
     const defaultQuery = 'bestsellers'; 
     fetchBooks(searchTerm || defaultQuery);
   }, [searchTerm]);
- const handleAddToBookshelf = (book) => {
-    const updatedBookshelf = [...bookshelf, book];
-    setBookshelf(updatedBookshelf);
-    localStorage.setItem('bookshelf', JSON.stringify(updatedBookshelf));
-  };
 
-  const isBookInBookshelf = (book) => {
-    return bookshelf.some((b) => b.key === book.key);
-  };
+
 
   return (
     <Container
@@ -59,9 +49,7 @@ export default function Featured({ searchTerm }) {
       </Stack>
       <Grid container spacing={3} sx={{ pt: '3rem' }}>
         {books.map((book) => {
-          const coverImage = book.cover_i
-            ? `http://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
-            : 'https://via.placeholder.com/128x193.png?text=No+Cover';
+      
 
           return (
             <Grid item key={book.key} xs={12} sm={6} md={4} lg={3}>
@@ -69,27 +57,25 @@ export default function Featured({ searchTerm }) {
                 sx={{
                   height: 350,
                   borderRadius: 2,
-                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
                 }}
               >
                 <img
-                  src={coverImage}
+                  src={book.image_url}
                   alt={book.title}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  style={{ width: '100%', height: '200px', objectFit: 'cover' }}
                 />
-                 </Card> <CardContent>
-                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography gutterBottom>{book.title}</Typography>
-                    <IconButton
-                      onClick={() => handleAddToBookshelf(book)}
-                      color="primary"
-                    >
-                      {isBookInBookshelf(book) ? <FaBookmark /> : <FaRegBookmark />}
-                    </IconButton>
+                <CardContent>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Typography gutterBottom variant="h6">
+                      {book.title}
+                    </Typography>
+                  
                   </Stack>
-             
-              </CardContent>
-             
+                </CardContent>
+              </Card>
             </Grid>
           );
         })}
@@ -97,5 +83,3 @@ export default function Featured({ searchTerm }) {
     </Container>
   );
 }
-
-
